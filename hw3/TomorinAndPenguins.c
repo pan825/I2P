@@ -1,38 +1,41 @@
 #include <stdio.h>
-#define P_MAX 100005
 
-// count valid pairs (i, j) where i < j and
-// satisfies the following conditions:
-// p_i AND p_j >= p_i XOR p_j
-
-int t;
-int n;
-int p[P_MAX];
-
-int main(void){
-    scanf("%d", &t);
-    while(t--){
-        scanf("%d", &n);
-        for(int i=0; i<n; i++){
-            scanf("%d", &p[i]);
-        }
-        
-        // The condition (a & b) >= (a ^ b) is equivalent to
-        // (a & b) * 2 >= a + b
-        // This happens when bits set in both numbers contribute more
-        // than bits set in only one number
-        
-        long long count = 0;
-        for(int i=0; i<n; i++){
-            for(int j=i+1; j<n; j++){
-                // Faster check: 2*(p[i] & p[j]) >= p[i] + p[j]
-                if(2 * (p[i] & p[j]) >= p[i] + p[j]){
-                    count++;
-                }
-            }
-        }
-        
-        printf("%lld\n", count);
+int maxBit(int x){
+    int ans = 0;
+    while(x>0){
+        x/=2;
+        ++ans;
     }
+    return ans;
+}
+
+#define MAX_N 100000
+int n;
+int p[MAX_N];
+int bit[32];
+
+void solve(){
+    // for(int i=0; i<32; ++i){
+    //     bit[i] = 0
+    // }
+    memset(bit, 0, sizeof(bit));
+    scanf("%d", &n);
+    for(int i=0; i<n; i++){
+        scanf("%d", &p[i]);
+    }
+    for(int i=0; i<n; i++){
+        ++bit[maxBit(p[i])];
+    }
+    long long ans = 0;
+    for(int i=0; i<32; i++){
+        ans += (long long)bit[i] * (bit[i] - 1) / 2;
+    }
+    printf("%lld\n", ans);
+}
+
+int main(){
+    int T;
+    scanf("%d", &T);
+    while(T--) solve();
     return 0;
 }
