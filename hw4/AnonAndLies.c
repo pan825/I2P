@@ -2,7 +2,6 @@
 // every number in the sequence appears exactly twice except for one unique number. 
 // Find this unique number.
 
-
 // 2
 // 7
 // 5 6 6 1 3 3 5
